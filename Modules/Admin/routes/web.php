@@ -29,6 +29,6 @@ Route::group(['prefix' => 'admin'], function()
     Route::post('subscription-store',[SubscriptionController::class,'store'])->name('Subscription.store');
     
 
-    
+    fefe
     
 });
