@@ -1,3 +1,6 @@
 {
-    "Admin": true
+    "Admin": true,
+    "Controller": true,
+    "SubscriptionController": true,
+    "Auth": true
 }

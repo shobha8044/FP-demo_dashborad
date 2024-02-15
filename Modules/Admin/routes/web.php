@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Admin\App\Http\Controllers\AdminController;
+use Modules\Admin\App\Http\Controllers\SubscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,12 @@ Route::group(['prefix' => 'admin'], function()
 {
     Route::get('login',[AdminController::class,'login'])->name('admin-login');
     Route::post('login/check',[AdminController::class,'loginCheck'])->name('adminLoginCheck');
-     Route::get('dashboard',[AdminController::class,'adminDashBoard'])->name('AdminDashboard');
+    Route::get('dashboard',[AdminController::class,'adminDashBoard'])->name('AdminDashboard');
+    Route::get('subscription',[SubscriptionController::class,'index'])->name('subscription');
+    Route::get('subscription-create',[SubscriptionController::class,'create'])->name('Subscription.Create');
+    Route::post('subscription-store',[SubscriptionController::class,'store'])->name('Subscription.store');
+    
 
+    
     
 });
