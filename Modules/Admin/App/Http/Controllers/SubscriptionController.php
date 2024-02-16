@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class SubscriptionController extends Controller
@@ -31,7 +32,24 @@ class SubscriptionController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->all();
+       // return $request->all();
+       //Subscription
+       $validator = Validator::make($request->all(), [
+            'subscription_pain' => 'required',
+            'price' => 'required|numeric',
+            'time' => 'required|numeric',
+            'time_type' => 'required',
+            'post' => 'required_without:chancel',
+            'chancel' => 'required_without:post',
+
+        ]);
+    
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        } else {
+        
+              return $request->all();
+        }
     }
 
     /**

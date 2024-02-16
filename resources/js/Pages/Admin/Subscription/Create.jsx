@@ -24,12 +24,12 @@ const [values, setValues] = useState({
 })
 
 function handleChange(e) {
-  const key = e.target.id;
-  const value = e.target.value
-  setValues(values => ({
-      ...values,
-      [key]: value,
-  }))
+  const { id, value, type, checked } = e.target;
+  const newValue = type === 'checkbox' ? (checked ? 1 : 0) : value;
+  setValues(prevValues => ({
+    ...prevValues,
+    [id]: newValue,
+  }));
 }
 
 
@@ -82,40 +82,46 @@ function handleSubmit(e) {
                             <input type="number" id="time" name="time" className="form-control" value={values.qty} onChange={handleChange} />
                           </div>
                         </div>
-                        <div class="row mb-3"></div>
-                          <div className="row mb-6">
-                            <label  className="col-sm-2 col-form-label" >Subscription Time Type</label>
-                              <div class="col-sm-5"> 
-                              <select className="form-select" name="time_type"  id="time_type" >
-                                <option selected>Select Type</option>
+                        <div className="row mb-6">
+                            <label className="col-sm-2 col-form-label">Subscription Time Type</label>
+                            <div className="col-sm-5">
+                              <select className="form-select" name="time_type" id="time_type" onChange={handleChange}>
+                                <option value="" disabled selected>Select Type</option>
                                 <option value="week">Week</option>
                                 <option value="month">Month</option>
                                 <option value="year">Year</option>
-                              
                               </select>
+                            </div>
                           </div>
+                        <div className="row mb-3">
+                      <legend className="col-form-label col-sm-2 pt-0">
+                        Benefect
+                      </legend>
+                      <div className="col-sm-10">
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            name="chancel"
+                            id="chancel"
+                            checked={values.chancel === 1}
+                            onChange={handleChange}
+                          />
+                          <label className="form-check-label">Chancel</label>
                         </div>
-                        <div class="row mb-3">
-                      <legend class="col-form-label col-sm-2 pt-0">Benefect</legend>
-                      <div class="col-sm-10">
-
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" name="chancel" id="chancel" />
-                          <label class="form-check-label" >
-                           Chancel
-                          </label>
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            name="post"
+                            id="post"
+                            checked={values.post === 1}
+                            onChange={handleChange}
+                          />
+                          <label className="form-check-label">Post</label>
                         </div>
-
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" name="post" id="post" />
-                          <label class="form-check-label" >
-                            Post
-                          </label>
-                        </div>
-
                       </div>
                     </div>
-                            
                         <div class="row mb-3">
                           <div class="col-sm-10">
                             <button type="submit" class="btn btn-primary">Add</button>
