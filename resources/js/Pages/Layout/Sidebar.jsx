@@ -46,6 +46,18 @@ export default function Sidebar(){
        </li>
        <li>
               <Link
+                href={"/admin/subscription"}
+                className={` ${
+                  url == "admin/subscription" ? "active" : ""} `}>
+                  Subscription
+                
+              </Link>
+            
+       </li>
+
+       
+       <li>
+              <Link
                 href={"/coupons"}
                 className={` ${
                   url == "/coupons" ? "active" : ""} `}>

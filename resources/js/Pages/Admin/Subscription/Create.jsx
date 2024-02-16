@@ -16,8 +16,8 @@ const [values, setValues] = useState({
   price: "",
   time: "",
   time_type: "",
-  post: "",
-  chancel : "",
+  product: "",
+  channel : "",
  
   
  
@@ -79,7 +79,7 @@ function handleSubmit(e) {
                         <div class="row mb-3">
                           <label class="col-sm-2 col-form-label">Subscription Time</label>
                           <div class="col-sm-5">
-                            <input type="number" id="time" name="time" className="form-control" value={values.qty} onChange={handleChange} />
+                            <input type="number" id="time" name="time" className="form-control" value={values.time} onChange={handleChange} />
                           </div>
                         </div>
                         <div className="row mb-6">
@@ -102,23 +102,23 @@ function handleSubmit(e) {
                           <input
                             className="form-check-input"
                             type="checkbox"
-                            name="chancel"
-                            id="chancel"
-                            checked={values.chancel === 1}
+                            name="channel"
+                            id="channel"
+                            checked={values.channel === 1}
                             onChange={handleChange}
                           />
-                          <label className="form-check-label">Chancel</label>
+                          <label className="form-check-label">Channel</label>
                         </div>
                         <div className="form-check">
                           <input
                             className="form-check-input"
                             type="checkbox"
-                            name="post"
-                            id="post"
-                            checked={values.post === 1}
+                            name="product"
+                            id="product"
+                            checked={values.product === 1}
                             onChange={handleChange}
                           />
-                          <label className="form-check-label">Post</label>
+                          <label className="form-check-label">Product</label>
                         </div>
                       </div>
                     </div>
@@ -130,7 +130,7 @@ function handleSubmit(e) {
                         <div class="row mb-3">
                           <div class="col-sm-10">
                             
-                               {/* <Link href={"/products"}> Back </Link> */}
+                               <Link href={"/admin/subscription"}> Back </Link>
                           </div>
                         </div> 
 

@@ -3,8 +3,9 @@ import HeaderLayout from "../../Layout/Header"
 import NavbarLayout from "../../Layout/Navbar"
 import SidebarLayout from  "../../Layout/Sidebar"
 import FooterLayout  from "../../Layout/Footer"
+import { Head, usePage, Link, router  } from '@inertiajs/react';
 
-export default function Index(){
+export default function Index({data}){
   return(
     <>
         <HeaderLayout/>
@@ -25,28 +26,37 @@ export default function Index(){
             <section class="section">
             <div class="row">
                 <div class="col-lg-12">
-
+                
                 <div class="card">
                     <div class="card-body">
                     <h5 class="card-title">Subscription Plain</h5>
+                    <Link
+                        href={"/admin/subscription-create"}
+                    >
+                        Subscription Add
+                    </Link>
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            {/* <th scope="col">#</th> */}
-                            <th scope="col">Name</th>
-                            <th scope="col">Email Id </th>
-                            <th scope="col">Status </th>
+                            <th scope="col">Subscription Plain</th>
+                            <th scope="col">Subscription Price </th>
+                            <th scope="col">Subscription Time </th>
+                            {/* <th scope="col">Chan </th> */}
+                            {/* <th scope="col">Subscription Time </th> */}
                         </tr>
                         </thead>
                         <tbody>
-                        {/* { users && users.map( (item) => (
-                        <tr> */}
-                            {/* <th scope="row">{item.id}</th> */}
-                            {/* <td>{item.name}</td> 
-                            <td>{item.email}</td>
-                            <td> {item.status === 1 ? 'Active' : 'Deactive'}</td>
-                        </tr> */}
-                        {/* )) } */}
+                        { data && data.map( (item) => (
+                        <tr>
+                           
+                            <td>{item.subscription_pain}</td> 
+                            <td>{item.price}</td>
+                            <td>{item.time}/{item.time_type} </td>
+
+                            
+                            {/* <td> {item.status === 1 ? 'Active' : 'Deactive'}</td> */}
+                        </tr> 
+                        )) }
                         </tbody>
                     </table>
                 

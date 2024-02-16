@@ -3,20 +3,22 @@
 namespace Modules\Admin\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Subscription;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
-
+use Ramsey\Uuid\Uuid;
 class SubscriptionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {
-        return Inertia::render('Admin/Subscription/Index');
+    {   
+        $data = Subscription::all();
+        return Inertia::render('Admin/Subscription/Index',['data'=>$data]);
     }
 
     /**
@@ -32,23 +34,33 @@ class SubscriptionController extends Controller
      */
     public function store(Request $request)
     {
-       // return $request->all();
-       //Subscription
+       
        $validator = Validator::make($request->all(), [
             'subscription_pain' => 'required',
             'price' => 'required|numeric',
             'time' => 'required|numeric',
             'time_type' => 'required',
-            'post' => 'required_without:chancel',
-            'chancel' => 'required_without:post',
+            'product' => 'required_without:channel',
+            'channel' => 'required_without:product',
 
         ]);
     
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         } else {
-        
-              return $request->all();
+           $subscription                     = new Subscription;  
+           $subscription->uuid               = Uuid::uuid4();
+           $subscription->subscription_pain  = $request->subscription_pain;
+           $subscription->price              = $request->price;
+           $subscription->time               = $request->time;
+           $subscription->time_type          = $request->time_type;
+           $subscription->product            = $request->product;
+           $subscription->channel            = $request->channel;
+           $subscription->save();
+
+           return redirect()->route('subscription');
+           
+
         }
     }
 

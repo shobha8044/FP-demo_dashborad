@@ -18,6 +18,8 @@ return new class extends Migration
             $table->float('price', 8, 2);
             $table->integer('time');
             $table->enum('time_type', ['week', 'month','year'])->default('week');
+            $table->integer('product')->default(0);
+            $table->integer('channel')->default(0);
             $table->timestamps();
         });
     }
