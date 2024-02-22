@@ -24,39 +24,29 @@ class ProductController extends Controller
 
     public function store(Request $request){
         
-        $validator = Validator::make($request->all(), [
-            'product_name' => 'required',
-            'qty' => 'required|numeric',
-            'price' => 'required|numeric',
-        ]);
-        
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        } else {
-            $image = $request->input('image');
-
-            $extension = $image->getClientOriginalExtension();
-            $filaname = time().','.$extension;
-            $image->move('public/image/',$filaname);
-          
-
-            $product = new Product;
-            $product->product_name = $request->product_name;
-            $product->slug = Str::slug($request->product_name);
-            $product->qty = $request->qty;
-            $product->price = $request->price;
-            $product->image = $filaname;
-            $product->save();
-                  
-            $productNumber = $this->generateProductNumber($product->id);
-        
-            $product->product_number = $productNumber;
-            $product->save();
+        $product = new Product;
+        $product->product_name = $request->product_name;
+        $product->slug = Str::slug($request->product_name);
+        $product->qty = $request->qty;
+        $product->price = $request->price;
+    
+        if ($request->image) {
+            $imageName = time().'.'.$request->image->getClientOriginalExtension();
+            $product->image = $imageName;
+            $request->image->storeAs('Image/product', $imageName, 'public');
+        }
+    
+        $product->save();
+    
+        $productNumber = $this->generateProductNumber($product->id);
+    
+        $product->product_number = $productNumber;
+        $product->save();
+    
+        return redirect()->route('Product');
            
-            return redirect()->route('Product');
-           
-       }
     }
+    
    
     public function getEditData($productId)
     {
@@ -65,8 +55,6 @@ class ProductController extends Controller
             'product' => $product
         ]);
     }
-
-    
     public function update(Request $request ,$productId){
 
         $validator = Validator::make($request->all(), [
@@ -87,15 +75,11 @@ class ProductController extends Controller
         }
 
     }
-    
     public function delete($productId){
     
         $product = Product::where('id',$productId)->delete();
         return redirect()->route('Product');
     }
-
-
-    
     public function generateProductNumber($id)
     {
         $year = Carbon::now()->format('Y');

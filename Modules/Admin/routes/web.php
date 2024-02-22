@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 use Modules\Admin\App\Http\Controllers\AdminController;
 use Modules\Admin\App\Http\Controllers\SubscriptionController;
 
@@ -28,6 +29,17 @@ Route::group(['prefix' => 'admin'], function()
     Route::get('subscription-create',[SubscriptionController::class,'create'])->name('Subscription.Create');
     Route::post('subscription-store',[SubscriptionController::class,'store'])->name('Subscription.store');
     
+    Route::get('subscription-edit/{subID}', function ($subID){
+        return Inertia::render(
+            'Admin/Subscription/Edit',
+            [
+                'subID' => $subID,
+            ]
+        );
+    });
+    Route::get('/get-subscription-edit/{subID}',[SubscriptionController::class,'getEditData']);
+    Route::post('/subscription-update/{subID}',[SubscriptionController::class,'update']);
+    Route::get('/subscription-delete/{subID}',[SubscriptionController::class,'delete']);
 
     
 });

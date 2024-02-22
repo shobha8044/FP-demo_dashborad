@@ -41,8 +41,8 @@ export default function Index({data}){
                             <th scope="col">Subscription Plain</th>
                             <th scope="col">Subscription Price </th>
                             <th scope="col">Subscription Time </th>
-                            {/* <th scope="col">Chan </th> */}
-                            {/* <th scope="col">Subscription Time </th> */}
+                            <th scope="col">Product </th>
+                            <th scope="col">Channel</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -52,9 +52,16 @@ export default function Index({data}){
                             <td>{item.subscription_pain}</td> 
                             <td>{item.price}</td>
                             <td>{item.time}/{item.time_type} </td>
-
+                            <td> {item.product === 1 ? 'Available' : 'NotAvailable'}</td>
+                            <td> {item.channel === 1 ? 'Available' : 'NotAvailable'}</td>
+                            <td className="border px-4 py-2">
+                                <Link href={'/admin/subscription-edit/'+item.uuid}>Edit</Link>
+                            </td>
+                            <td className="border px-4 py-2">
+                                <Link href={'/admin/subscription-delete/'+item.uuid}>Delete</Link>
+                            </td>
                             
-                            {/* <td> {item.status === 1 ? 'Active' : 'Deactive'}</td> */}
+                           
                         </tr> 
                         )) }
                         </tbody>

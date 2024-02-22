@@ -54,8 +54,8 @@ class SubscriptionController extends Controller
            $subscription->price              = $request->price;
            $subscription->time               = $request->time;
            $subscription->time_type          = $request->time_type;
-           $subscription->product            = $request->product;
-           $subscription->channel            = $request->channel;
+           $subscription->product            = $request->product ?? 0;
+           $subscription->channel            = $request->channel ?? 0;
            $subscription->save();
 
            return redirect()->route('subscription');
@@ -67,32 +67,66 @@ class SubscriptionController extends Controller
     /**
      * Show the specified resource.
      */
-    public function show($id)
+    public function getEditData($subID)
     {
-        return view('admin::show');
+        $subData = Subscription::where('uuid',$subID)->first();
+
+       // return $subData;
+        return response()->json([
+            'subData' => $subData
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
-    {
-        return view('admin::edit');
-    }
+   
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, $subID)
     {
-        //
+       
+        $validator = Validator::make($request->all(), [
+            'subscription_pain' => 'required',
+            'price' => 'required|numeric',
+            'time' => 'required|numeric',
+            'time_type' => 'required',
+            'product' => 'required_without:channel',
+            'channel' => 'required_without:product',
+
+        ]);
+    
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        } else {
+           $subscription                     =  Subscription::where('uuid',$subID)->first();  
+          if($subscription){
+            $subscription->uuid               = Uuid::uuid4();
+            $subscription->subscription_pain  = $request->subscription_pain;
+            $subscription->price              = $request->price;
+            $subscription->time               = $request->time;
+            $subscription->time_type          = $request->time_type;
+            $subscription->product            = $request->product ?? 0;
+            $subscription->channel            = $request->channel ?? 0;
+            $subscription->save();
+ 
+            return redirect()->route('subscription');
+          }else{
+           
+             return "Subscription not found";
+          }
+          
+           
+
+        }
+        
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
+    public function delete($subID)
     {
-        //
+        $coupon = Subscription::where('uuid',$subID)->delete();
+        return redirect()->route('subscription');
     }
 }
