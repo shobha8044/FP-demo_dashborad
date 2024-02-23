@@ -54,7 +54,20 @@ export default function Sidebar(){
               </Link>
             
        </li>
+       <li>
+              <Link
+                href={"/admin/chanel"}
+                className={` ${
+                  url == "admin/chanel" ? "active" : ""} `}>
+                  Chanel
+                
+              </Link>
+            
+       </li>
+       
 
+
+       
        
        <li>
               <Link

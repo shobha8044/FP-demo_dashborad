@@ -38,18 +38,18 @@ Route::middleware(['adminAuth'])->group(function () {
         Route::post('product-update/{productId}',[ProductController::class,'update'])->name('product.update');
 
 
-        Route::get('/product-edit/{productId}', function ($productId) {
+        Route::get('/product-edit/{productId}', function ($slug) {
             return Inertia::render(
                 'Product/Edit',
                 [
-                    'productId' => $productId,
+                    'slug' => $slug,
                 ]
             );
         })->name('product.edit');
 
-        Route::get('/get-product-edit/{productId}',[ProductController::class,'getEditData']);
+        Route::get('/get-product-edit/{slug}',[ProductController::class,'getEditData']);
 
-        Route::get('/product-delete/{productId}',[ProductController::class,'delete']);
+        Route::get('/product-delete/{slug}',[ProductController::class,'delete']);
 
         Route::get('/coupons',[CouponsController::class,'index'])->name('coupons');;
         Route::get('/coupon-create',[CouponsController::class,'create']);

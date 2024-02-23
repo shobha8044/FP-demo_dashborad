@@ -1,13 +1,11 @@
 import React from "react"
-// import { Link, usePage } from "@inertiajs/react";
-import HeaderLayout from "../Layout/Header"
-import NavbarLayout from "../Layout/Navbar"
-import SidebarLayout from  "../Layout/Sidebar"
-import FooterLayout  from "../Layout/Footer"
+import HeaderLayout from "../../Layout/Header"
+import NavbarLayout from "../../Layout/Navbar"
+import SidebarLayout from  "../../Layout/Sidebar"
+import FooterLayout  from "../../Layout/Footer"
 import { Head, usePage, Link, router  } from '@inertiajs/react';
 
-const baseUrl = 'http://127.0.0.1:8000/';
-export default function Index({products}){
+export default function Index(){
  
 
   
@@ -20,10 +18,10 @@ export default function Index({products}){
         <main id="main" class="main">
 
             <div class="pagetitle">
-            <h1>Product </h1>
+            <h1>Chanel </h1>
             <nav>
                 <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Product</a></li>
+                <li class="breadcrumb-item"><a href="/">Chanel</a></li>
               
                 <li class="breadcrumb-item active">Listing</li>
                 </ol>
@@ -35,11 +33,11 @@ export default function Index({products}){
                 <div class="col-lg-12">
                  <div class="card">
                     <div class="card-body">
-                    <h5 class="card-title">Product </h5>
+                    <h5 class="card-title">Chanel </h5>
                     <Link
-                        href={"/product-create"}
+                        href={"/admin/chanel-create"}
             >
-                        Product Add
+                        Chanel Add
                     </Link>
                    
                     <table class="table table-striped">
@@ -47,16 +45,16 @@ export default function Index({products}){
                         <tr>
                             {/* <th scope="col">#</th> */}
                             <th scope="col">Name</th>
-                            <th scope="col"> Number</th>
+                            {/* <th scope="col"> Number</th>
                             <th scope="col">Qty</th>
                             <th scope="col">Price</th>
                             <th scope="col">Image</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">Action</th> */}
                              
                         </tr>
                         </thead>
                         <tbody>
-
+{/* 
                         { products && products.map( (item) => (
                         <tr>
                             <td>{item.product_name}</td> 
@@ -72,7 +70,7 @@ export default function Index({products}){
 
                             </td>
                         </tr>
-                        )) }
+                        )) } */}
                        
                         </tbody>
                     </table>

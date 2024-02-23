@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Modules\Admin\App\Http\Controllers\AdminController;
+use Modules\Admin\App\Http\Controllers\ChanelController;
 use Modules\Admin\App\Http\Controllers\SubscriptionController;
 
 /*
@@ -40,6 +41,13 @@ Route::group(['prefix' => 'admin'], function()
     Route::get('/get-subscription-edit/{subID}',[SubscriptionController::class,'getEditData']);
     Route::post('/subscription-update/{subID}',[SubscriptionController::class,'update']);
     Route::get('/subscription-delete/{subID}',[SubscriptionController::class,'delete']);
+
+
+   
+    Route::get('chanel',[ChanelController::class,'index'])->name('chanel');
+    Route::get('chanel-create',[ChanelController::class,'create'])->name('Chanel.Create');
+    Route::post('chanel-store',[ChanelController::class,'store'])->name('Chanel.Store');
+
 
     
 });
