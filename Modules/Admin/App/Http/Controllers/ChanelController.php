@@ -38,7 +38,16 @@ class ChanelController extends Controller
     public function store(Request $request)
     {
   
-         return $request->all();
+        
+        if(count($request->images)>0){
+            foreach($request->images as $image){
+                $imageName = time().'.'.$request->image->extension();  
+                $request->image->storeAs('/public/Chanel-image/', $image); 
+                                  
+            }
+
+               
+        }
         // $validator = Validator::make($request->all(), [
         //     'name' => 'required',
         //     'description' => 'required',
@@ -73,7 +82,7 @@ class ChanelController extends Controller
         //     $imgData->channel_image = $imageName;
         //     $imgData->save();
         
-        // }
+        }
         
         // if($request->channel_video){
         //     $videoName = time().'.'.$request->channel_video->extension();  
