@@ -38,66 +38,79 @@ class ChanelController extends Controller
     public function store(Request $request)
     {
   
-        
-        if(count($request->images)>0){
-            foreach($request->images as $image){
-                $imageName = time().'.'.$request->image->extension();  
-                $request->image->storeAs('/public/Chanel-image/', $image); 
-                                  
-            }
-
-               
-        }
-        // $validator = Validator::make($request->all(), [
-        //     'name' => 'required',
-        //     'description' => 'required',
-        //     'price' => 'required|numeric',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric',
            
-        // ]);
+        ]);
        
-        // if ($validator->fails()) {
-        //     return back()->withErrors($validator)->withInput();
-        // } else {
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        } else {
               
-        //     $chanel                = new Channel;
-        //     $chanel->uuid           = Uuid::uuid4();
-        //     $chanel->name           = $request->name;
-        //     $chanel->slug           = Str::slug($request->name);
-        //     $chanel->price          = $request->price;
-        //     $chanel->description    = $request->description;
-        //     $chanel->save();
+            $chanel                = new Channel;
+            $chanel->uuid           = Uuid::uuid4();
+            $chanel->name           = $request->name;
+            $chanel->slug           = Str::slug($request->name);
+            $chanel->price          = $request->price;
+            $chanel->description    = $request->description;
+            $chanel->save();
                    
-        // }
-       
-        // if($request->image){
-        //     $imageName = time().'.'.$request->image->extension();  
-        //     $request->image->storeAs('/public/Chanel-image/', $imageName); 
-                                  
-        //     $imgData               = new ChannelImage;
-        //     $imgData->uuid          = Uuid::uuid4();
-        //     $imgData->name          = $request->image_name;
-        //     $imgData->slug           = Str::slug($request->image_name);
-        //     $imgData->channel_id    = $chanel->id;
-        //     $imgData->description   = $request->description;
-        //     $imgData->channel_image = $imageName;
-        //     $imgData->save();
-        
         }
+       
         
-        // if($request->channel_video){
-        //     $videoName = time().'.'.$request->channel_video->extension();  
-        //     $request->channel_video->storeAs('/public/Chanel-video/', $videoName); 
-        //     $videoData               = new ChannelVideo;
-        //     $videoData->uuid          = Uuid::uuid4();
-        //     $videoData->name          = $request->video_name;
-        //     $videoData->slug           = Str::slug($request->video_name);
-        //     $videoData->channel_id    = $chanel->id;
-        //     $videoData->description   = $request->video_description;
-        //     $videoData->channel_video = $videoName;
-        //     $videoData->save();
-        // }
+            // if ($request->hasFile('images')) {
+            //     foreach ($request->file('images') as $image) {
+            //         $imageName = time() . '_' . $image->getClientOriginalName();
+            //         $image->storeAs('public/Chanel-image', $imageName);
+            //         $imgData                = new ChannelImage;
+            //         $imgData->uuid          = Uuid::uuid4();
+            //         $imgData->name          = $request->image_name;
+            //         $imgData->slug          = Str::slug($request->image_name);
+            //         $imgData->channel_id    = $chanel->id;
+            //         $imgData->description   = $request->description;
+            //         $imgData->channel_image = $imageName;
+            //         $imgData->save();
+            //     }
+            // }
+                                
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    // Generate a unique name for the image
+                    $imageName = time() . '_' . $image->getClientOriginalName();
+                    // Store the image in the desired directory
+                    $image->storeAs('public/Chanel-image', $imageName);
+                    
+                    // Create a new instance of ChannelImage model
+                    $imgData = new ChannelImage;
+                    $imgData->uuid = Uuid::uuid4();
+                    $imgData->name = $request->input('image_name'); // Use input() method to retrieve input data
+                    $imgData->slug = Str::slug($request->input('image_name')); // Generate slug
+                    $imgData->channel_id = $chanel->id; // Assuming $chanel variable holds the channel id
+                    $imgData->description = $request->input('description'); // Get description from input
+                    $imgData->channel_img = $imageName; // Set the image name
+                    $imgData->save(); // Save the image data to the database
+                }
+            }
+           
+        
+       
+        
+        if($request->channel_video){
+            $videoName = time().'.'.$request->channel_video->extension();  
+            $request->channel_video->storeAs('/public/Chanel-video/', $videoName); 
+            $videoData               = new ChannelVideo;
+            $videoData->uuid          = Uuid::uuid4();
+            $videoData->name          = $request->video_name;
+            $videoData->slug           = Str::slug($request->video_name);
+            $videoData->channel_id    = $chanel->id;
+            $videoData->description   = $request->video_description;
+            $videoData->channel_video = $videoName;
+            $videoData->save();
+        }
 
-        // return redirect()->route('chanel');
+        return redirect()->route('chanel');
     }
 
 
