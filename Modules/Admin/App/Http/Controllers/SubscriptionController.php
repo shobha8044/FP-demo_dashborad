@@ -17,7 +17,8 @@ class SubscriptionController extends Controller
      */
     public function index()
     {   
-        $data = Subscription::all();
+        
+        $data = Subscription::Orderby('created_at','desc')->get();
         return Inertia::render('Admin/Subscription/Index',['data'=>$data]);
     }
 

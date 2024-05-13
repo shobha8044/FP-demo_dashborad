@@ -4,8 +4,8 @@ import NavbarLayout from "../../Layout/Navbar"
 import SidebarLayout from  "../../Layout/Sidebar"
 import FooterLayout  from "../../Layout/Footer"
 import { Head, usePage, Link, router  } from '@inertiajs/react';
-
-export default function Index(){
+const baseUrl = 'http://127.0.0.1:8000/';
+export default function Index({data}){
  
 
   
@@ -15,36 +15,37 @@ export default function Index(){
         <NavbarLayout />
         <SidebarLayout />
 
-        <main id="main" class="main">
+        <main id="main" className="main">
 
-            <div class="pagetitle">
+            <div className="pagetitle">
             <h1>Chanel </h1>
             <nav>
-                <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Chanel</a></li>
+                <ol className="breadcrumb">
+                <li className="breadcrumb-item"><a href="/">Chanel</a></li>
               
-                <li class="breadcrumb-item active">Listing</li>
+                <li className="breadcrumb-item active">Listing</li>
                 </ol>
             </nav>
             </div>
 
-            <section class="section">
-            <div class="row">
-                <div class="col-lg-12">
-                 <div class="card">
-                    <div class="card-body">
-                    <h5 class="card-title">Chanel </h5>
+            <section className="section">
+            <div className="row">
+                <div className="col-lg-12">
+                 <div className="card">
+                    <div className="card-body">
+                    <h5 className="card-title">Chanel </h5>
                     <Link
                         href={"/admin/chanel-create"}
             >
                         Chanel Add
                     </Link>
                    
-                    <table class="table table-striped">
+                    <table className="table table-striped">
                         <thead>
                         <tr>
                             {/* <th scope="col">#</th> */}
                             <th scope="col">Name</th>
+                            <th scope="col">videos</th>
                             {/* <th scope="col"> Number</th>
                             <th scope="col">Qty</th>
                             <th scope="col">Price</th>
@@ -54,11 +55,19 @@ export default function Index(){
                         </tr>
                         </thead>
                         <tbody>
-{/* 
-                        { products && products.map( (item) => (
+
+                         { data && data.map( (item) => ( 
                         <tr>
-                            <td>{item.product_name}</td> 
-                            <td>{item.product_number }</td> 
+                            <td>{item.name}</td> 
+                            <td><video width="320" height="240" autoplay>
+                                 {/* <source src="item.channelVideo.channel_video_url" type="video/mp4"/> */}
+
+                                 <source src={item.channelVideo.channel_video_url}  type="video/mp4"/> 
+
+                                 {/* <td>{item.image && <img src={baseUrl+'storage/'+item.image} alt="Image not found" width="200px"/>}</td>  */}
+
+                                   </video></td>
+                            {/* <td>{item.product_number }</td> 
                             <td>{item.qty}</td> 
                             <td>{item.price}</td> 
                             <td>{item.image && <img src={baseUrl+'storage/images/'+item.image} alt="Image not found" width="200px"/>}</td> 
@@ -66,11 +75,9 @@ export default function Index(){
                             <Link href={'product-edit/' + item.slug}>Edit</Link>
                             </td>
                             <td className="border px-4 py-2">
-                            <Link href={'product-delete/' + item.slug}>Delete</Link>
-
-                            </td>
+                            <Link href={'product-delete/' + item.slug}>Delete</Link> </td> */}
                         </tr>
-                        )) } */}
+                        )) } 
                        
                         </tbody>
                     </table>

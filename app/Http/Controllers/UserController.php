@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         // Here we provide posts from the database to prop that we created in component
         $users = User::where('user_role', 0)->orderBy('id','desc')->get();
-        return Inertia::render('Users/Index',['users'=>$users]);
+         return Inertia::render('Users/Index',['users'=>$users]);
   
 
         

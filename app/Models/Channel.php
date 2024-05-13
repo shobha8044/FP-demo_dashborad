@@ -9,5 +9,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Channel extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $dates = ['deleted_at'];
+   
+
+    public function channelImage (){
+        return $this->hasMany(ChannelImage::class,'channel_id','id');
+    }
+    
+    public function channelVideo (){
+        return $this->hasMany(ChannelVideo::class,'channel_id','id');
+    }
+   
 }

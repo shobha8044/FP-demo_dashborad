@@ -10,4 +10,18 @@ class ChannelImage extends Model
 {
     use HasFactory, SoftDeletes;
     protected $dates = ['deleted_at'];
+
+    protected $appends = [
+        'channel_img_url'
+    ];
+
+    public function getChannelImgUrlAttribute()
+    {
+        if (!empty($this->channel_image)) {
+            return url('storage'.$this->channel_image);
+        }
+        return '';
+    }
+
+    
 }

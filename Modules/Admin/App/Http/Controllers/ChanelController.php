@@ -21,7 +21,11 @@ class ChanelController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/Chanel/Index');
+
+       $data = Channel::With(['channelImage','channelVideo'])->orderBy('created_at','desc')->get();
+       // return $data;
+       return Inertia::render('Admin/Chanel/Index', ['data' => $data]);
+      
     }
 
     /**
@@ -37,75 +41,76 @@ class ChanelController extends Controller
      */
     public function store(Request $request)
     {
-  
-        
-        if(count($request->images)>0){
-            foreach($request->images as $image){
-                $imageName = time().'.'.$request->image->extension();  
-                $request->image->storeAs('/public/Chanel-image/', $image); 
-                                  
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'images.*.images' => 'required|array|min:1', 
+            'images.*' => 'image|mimes:jpg,jpeg,png,gif,bmp,tif,tiff,svg,webp,avif', 
+            'description' => 'required',
+            'image_name'  => 'required',
+           
+        ]);
+       
+        if ($validator->fails()) {
+            // return response()->json(['errors' => $validator->errors()], 422);
+           
+             return back()->withErrors($validator)->withInput();
+        } else {
+              
+            $chanel                = new Channel;
+            $chanel->uuid           = Uuid::uuid4();
+            $chanel->name           = $request->name;
+            $chanel->slug           = Str::slug($request->name);
+            $chanel->price          = $request->price;
+            $chanel->description    = $request->description;
+            $chanel->save();
+            $images =  $request->file('images');
+            if(count($images)>0){
+                foreach ($images as $image) {
+                    $imageName = '/Chanel-image'.time().'_'.$image->extension();
+                    $image->storeAs('public', $imageName);
+                    $image->move(public_path('storage/Chanel-image/'), $imageName);
+                    
+                    $imgData = new ChannelImage;
+                    $imgData->uuid = Uuid::uuid4();
+                    $imgData->name = $request->image_name;
+                    $imgData->slug = Str::slug($request->image_name);
+                    $imgData->channel_id = $chanel->id;
+                    $imgData->description = $request->image_description??Null;
+                    $imgData->channel_image = $imageName;
+                    $imgData->save();
+                
+                }
             }
 
-               
-        }
-        // $validator = Validator::make($request->all(), [
-        //     'name' => 'required',
-        //     'description' => 'required',
-        //     'price' => 'required|numeric',
-           
-        // ]);
-       
-        // if ($validator->fails()) {
-        //     return back()->withErrors($validator)->withInput();
-        // } else {
-              
-        //     $chanel                = new Channel;
-        //     $chanel->uuid           = Uuid::uuid4();
-        //     $chanel->name           = $request->name;
-        //     $chanel->slug           = Str::slug($request->name);
-        //     $chanel->price          = $request->price;
-        //     $chanel->description    = $request->description;
-        //     $chanel->save();
-                   
-        // }
-       
-        // if($request->image){
-        //     $imageName = time().'.'.$request->image->extension();  
-        //     $request->image->storeAs('/public/Chanel-image/', $imageName); 
-                                  
-        //     $imgData               = new ChannelImage;
-        //     $imgData->uuid          = Uuid::uuid4();
-        //     $imgData->name          = $request->image_name;
-        //     $imgData->slug           = Str::slug($request->image_name);
-        //     $imgData->channel_id    = $chanel->id;
-        //     $imgData->description   = $request->description;
-        //     $imgData->channel_image = $imageName;
-        //     $imgData->save();
-        
-        }
-        
-        // if($request->channel_video){
-        //     $videoName = time().'.'.$request->channel_video->extension();  
-        //     $request->channel_video->storeAs('/public/Chanel-video/', $videoName); 
-        //     $videoData               = new ChannelVideo;
-        //     $videoData->uuid          = Uuid::uuid4();
-        //     $videoData->name          = $request->video_name;
-        //     $videoData->slug           = Str::slug($request->video_name);
-        //     $videoData->channel_id    = $chanel->id;
-        //     $videoData->description   = $request->video_description;
-        //     $videoData->channel_video = $videoName;
-        //     $videoData->save();
-        // }
+            $video =  $request->file('channel_videos');
+            if(count($video)>0){
+                foreach($video as $video){
+                    
+                    $videoName = '/Chanel-video'.time().'_'.$video->extension();
+                    $video->storeAs('public', $videoName);
+                    $video->move(public_path('storage/Chanel-video/'), $videoName);
 
-        // return redirect()->route('chanel');
+                    $imgData                      = new ChannelVideo;
+                    $imgData->uuid                = Uuid::uuid4();
+                    $imgData->name                = $request->video_name;
+                    $imgData->slug                = Str::slug($request->video_name);
+                    $imgData->channel_id          = $chanel->id;
+                    $imgData->description         = $request->video_description;
+                    $imgData->channel_video       = $videoName;
+                    $imgData->save();
+                                    
+                }
+
+                
+            }
+        
+             return redirect()->route('chanel');
+        }
+
     }
-
-
-    
-
-    /**
-     * Show the specified resource.
-     */
+       
     public function show($id)
     {
         return view('admin::show');
