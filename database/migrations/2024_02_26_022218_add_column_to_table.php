@@ -12,12 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('channel_images', function (Blueprint $table) {
-            $table->foreignId('channel_id')->after('id');
-            $table->uuid('uuid')->after('channel_id');
-            $table->string('name')->after('uuid');
-            $table->string('slug')->after('name');
-            $table->longText('description')->after('slug')->nullable();
-            $table->string('channel_image')->after('description')->nullable();
+            $table->string('channel_img')->after('name');
         });
     }
 

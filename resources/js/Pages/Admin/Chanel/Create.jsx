@@ -32,6 +32,7 @@ export default function Create() {
          
       },
     });
+<<<<<<< HEAD
   };
 
   function handleFileUpload(event) {
@@ -45,6 +46,15 @@ export default function Create() {
     const fileArray = Array.from(files);
     setData("channel_videos", fileArray);
   }
+=======
+};
+function handleFileUpload(event) {
+  const files = event.target.files;
+  const fileArray = Array.from(files);
+  const fileNames = fileArray.map((file) => file.name);
+  setData("images", fileArray); // Store array of file objects
+}
+>>>>>>> b8f48b15a93706d1723ffdb718c76bfeb3ed2094
 
   return (
     <>
@@ -120,6 +130,7 @@ export default function Create() {
                           )}
                       </div>
                     </div>
+<<<<<<< HEAD
                     <div className="row mb-3">
                       <label className="col-sm-2 col-form-label">Images</label>
                       <div className="col-sm-5">
@@ -150,6 +161,28 @@ export default function Create() {
                             <div className="text-danger">{errors.image_name}</div>
                           )}
                       </div>
+=======
+                  
+
+                    <div class="row mb-3">
+                      <label className="col-sm-2 col-form-label">Images</label>
+                      <div class="col-sm-5">
+                        <input
+                          type="file"
+                          name="images"
+                          id="images"
+                          multiple // Enable multiple file selection
+                          className="form-control"
+                          onChange={(e) => handleFileUpload(e)}
+                        />
+                      </div>
+                      </div>
+                    <div class="row mb-3">
+                        <label className="col-sm-2 col-form-label">Image Name</label>
+                        <div class="col-sm-5">
+                        <input type="text" name="image_name" id="image_name" className="form-control"  onChange={e => setData('image_name', e.target.value)} />
+                         </div>
+>>>>>>> b8f48b15a93706d1723ffdb718c76bfeb3ed2094
                     </div>
                     <div className="row mb-3">
                       <label className="col-sm-2 col-form-label">Image Description</label>
