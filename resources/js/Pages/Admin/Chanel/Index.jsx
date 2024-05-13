@@ -59,14 +59,13 @@ export default function Index({data}){
                          { data && data.map( (item) => ( 
                         <tr>
                             <td>{item.name}</td> 
-                            <td><video width="320" height="240" autoplay>
-                                 {/* <source src="item.channelVideo.channel_video_url" type="video/mp4"/> */}
-
-                                 <source src={item.channelVideo.channel_video_url}  type="video/mp4"/> 
-
-                                 {/* <td>{item.image && <img src={baseUrl+'storage/'+item.image} alt="Image not found" width="200px"/>}</td>  */}
-
-                                   </video></td>
+                            <td>
+                            {item.channel_video && item.channel_video.map(video => (
+                              <video key={video.id} width="320" height="240" autoPlay>
+                                <source src={video.channel_video_url} type="video/mp4" /> <br/>
+                              </video>
+                            ))}
+                          </td>
                             {/* <td>{item.product_number }</td> 
                             <td>{item.qty}</td> 
                             <td>{item.price}</td> 

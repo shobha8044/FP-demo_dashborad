@@ -23,8 +23,8 @@ class ChanelController extends Controller
     {
 
        $data = Channel::With(['channelImage','channelVideo'])->orderBy('created_at','desc')->get();
-       // return $data;
-       return Inertia::render('Admin/Chanel/Index', ['data' => $data]);
+        //return $data;
+      return Inertia::render('Admin/Chanel/Index', ['data' => $data]);
       
     }
 
@@ -79,9 +79,10 @@ class ChanelController extends Controller
                     $imgData->channel_id = $chanel->id;
                     $imgData->description = $request->image_description??Null;
                     $imgData->channel_image = $imageName;
+                   
                     $imgData->save();
-                
                 }
+               
             }
 
             $video =  $request->file('channel_videos');
@@ -99,10 +100,10 @@ class ChanelController extends Controller
                     $imgData->channel_id          = $chanel->id;
                     $imgData->description         = $request->video_description;
                     $imgData->channel_video       = $videoName;
-                    $imgData->save();
-                                    
+                  
+                    $imgData->save();                  
                 }
-
+              
                 
             }
         
