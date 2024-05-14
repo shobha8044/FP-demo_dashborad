@@ -47,7 +47,16 @@ Route::group(['prefix' => 'admin'], function()
     Route::get('chanel',[ChanelController::class,'index'])->name('chanel');
     Route::get('chanel-create',[ChanelController::class,'create'])->name('Chanel.Create');
     Route::post('chanel-store',[ChanelController::class,'store'])->name('Chanel.Store');
-
+    Route::get('channel-edit/{uId}', function ($uId){
+        return Inertia::render(
+            'Admin/Chanel/Edit',
+            [
+                'uId' => $uId,
+            ]
+        );
+    });
+    Route::get('/get-channel-edit/{uId}',[ChanelController::class,'getEditData']);
+    Route::post('/channel-update/{uId}',[ChanelController::class,'update']);
 
     
 });

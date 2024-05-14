@@ -18,7 +18,7 @@ class ChannelVideo extends Model
     public function getChannelVideoUrlAttribute()
     {
         if (!empty($this->channel_video)) {
-            return url('storage'.$this->channel_video);
+            return url('storage/'.$this->channel_video);
         }
         return '';
     }

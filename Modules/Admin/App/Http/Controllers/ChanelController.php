@@ -23,8 +23,8 @@ class ChanelController extends Controller
     {
 
        $data = Channel::With(['channelImage','channelVideo'])->orderBy('created_at','desc')->get();
-        //return $data;
-      return Inertia::render('Admin/Chanel/Index', ['data' => $data]);
+       //return $data;
+        return Inertia::render('Admin/Chanel/Index', ['data' => $data]);
       
     }
 
@@ -58,17 +58,17 @@ class ChanelController extends Controller
             return back()->withErrors($validator)->withInput();
         } else {
               
-            $chanel                = new Channel;
-            $chanel->uuid           = Uuid::uuid4();
-            $chanel->name           = $request->name;
-            $chanel->slug           = Str::slug($request->name);
-            $chanel->price          = $request->price;
-            $chanel->description    = $request->description;
+            $chanel               = new Channel;
+            $chanel->uuid         = Uuid::uuid4();
+            $chanel->name         = $request->name;
+            $chanel->slug         = Str::slug($request->name);
+            $chanel->price        = $request->price;
+            $chanel->description  = $request->description;
             $chanel->save();
             $images =  $request->file('images');
             if(count($images)>0){
                 foreach ($images as $image) {
-                    $imageName = '/Chanel-image'.time().'_'.$image->extension();
+                    $imageName = 'Chanel-image/'.time().'_'.$image->getClientOriginalName();
                     $image->storeAs('public', $imageName);
                     $image->move(public_path('storage/Chanel-image/'), $imageName);
                     
@@ -82,62 +82,64 @@ class ChanelController extends Controller
                    
                     $imgData->save();
                 }
-               
             }
-
-            $video =  $request->file('channel_videos');
-            if(count($video)>0){
-                foreach($video as $video){
-                    
-                    $videoName = '/Chanel-video'.time().'_'.$video->extension();
+            $videos = $request->file('channel_videos');
+            if(!empty($videos)){
+                foreach($videos as $video){
+                    $videoName = 'Channel-video/' . time() . '_' . $video->getClientOriginalName(); 
                     $video->storeAs('public', $videoName);
-                    $video->move(public_path('storage/Chanel-video/'), $videoName);
-
-                    $imgData                      = new ChannelVideo;
-                    $imgData->uuid                = Uuid::uuid4();
-                    $imgData->name                = $request->video_name;
-                    $imgData->slug                = Str::slug($request->video_name);
-                    $imgData->channel_id          = $chanel->id;
-                    $imgData->description         = $request->video_description;
-                    $imgData->channel_video       = $videoName;
-                  
-                    $imgData->save();                  
+                    $video->move(public_path('storage/Channel-video/'), $videoName); // You don't need to move the file if you're storing it with storeAs().
+                    
+                    $videoData                = new ChannelVideo;
+                    $videoData->uuid          = Uuid::uuid4();
+                    $videoData->name          = $request->video_name;
+                    $videoData->slug          = Str::slug($request->video_name);
+                    $videoData->channel_id    = $chanel->id; // Assuming $chanel is already defined.
+                    $videoData->description   = $request->video_description;
+                    $videoData->channel_video = $videoName;
+                    $videoData->save();                  
                 }
-              
-                
             }
+            // $videos =  $request->file('channel_videos');
+            // //print_r($videos);
+            // if(count($videos)>0){
+            //     foreach($videos as $video){
+            //         $videoName = '/Chanel-video'.time().'_'.$video->extension();
+            //         $video->storeAs('public', $videoName);
+            //         $video->move(public_path('storage/Chanel-video/'), $videoName);
+            //         $videoData                      = new ChannelVideo;
+            //         $videoData->uuid                = Uuid::uuid4();
+            //         $videoData->name                = $request->video_name;
+            //         $videoData->slug                = Str::slug($request->video_name);
+            //         $videoData->channel_id          = $chanel->id;
+            //         $videoData->description         = $request->video_description;
+            //         $videoData->channel_video       = $videoName;
+            //         $videoData->save();                  
+            //     }
+            // }
         
              return redirect()->route('chanel');
         }
 
     }
        
-    public function show($id)
+    public function getEditData($uID)
     {
-        return view('admin::show');
+        $channelData  = Channel::where('uuid',$uID)->first();
+        $channelImage = ChannelImage::where('channel_id',$channelData->id)->get();
+        $channelVideo = ChannelVideo::where('channel_id',$channelData->id)->get();
+        if(!empty($channelData) || !empty($channelImage) || !empty($channelVideo)  ){
+            return response()->json([
+                'channelData' => $channelData,
+                'channelImage' => $channelImage,
+                'channelVideo' => $channelVideo,
+            ]);
+        }
+          
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function update (Request $request)
     {
-        return view('admin::edit');
-    }
+        return $request->all();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

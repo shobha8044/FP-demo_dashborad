@@ -18,7 +18,7 @@ class ChannelImage extends Model
     public function getChannelImgUrlAttribute()
     {
         if (!empty($this->channel_image)) {
-            return url('storage'.$this->channel_image);
+            return url('storage/'.$this->channel_image);
         }
         return '';
     }

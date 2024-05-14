@@ -45,12 +45,10 @@ export default function Index({data}){
                         <tr>
                             {/* <th scope="col">#</th> */}
                             <th scope="col">Name</th>
-                            <th scope="col">videos</th>
-                            {/* <th scope="col"> Number</th>
-                            <th scope="col">Qty</th>
-                            <th scope="col">Price</th>
                             <th scope="col">Image</th>
-                            <th scope="col">Action</th> */}
+                            <th scope="col">Videos</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Action</th> 
                              
                         </tr>
                         </thead>
@@ -58,23 +56,50 @@ export default function Index({data}){
 
                          { data && data.map( (item) => ( 
                         <tr>
-                            <td>{item.name}</td> 
-                            <td>
-                            {item.channel_video && item.channel_video.map(video => (
-                              <video key={video.id} width="320" height="240" autoPlay>
-                                <source src={video.channel_video_url} type="video/mp4" /> <br/>
-                              </video>
-                            ))}
+                          <td>{item.name}</td> 
+                          <td>
+                            <div>
+                             {item.channel_image && item.channel_image.length > 0 ? (
+                                item.channel_image.map(image => (
+                                  <div key={image.id}>
+                                    <img src={image.channel_img_url} alt={image.description} width="100" height="100" />
+                                    <br />
+                                    <br />
+                                  </div>
+                                ))
+                              ) : (
+                                <div>
+                                  No images available.
+                                </div>
+                              )}
+
+                              </div>
+                              </td>
+                              <td>
+                              <div>
+                              {item.channel_video && item.channel_video.length > 0 ? (
+                                 item.channel_video.map(video => (
+                                <div key={video.id}>
+                                  <video width="100" height="100"  controls>
+                                    <source src={video.channel_video_url} type="video/mp4" />
+                                  </video>
+                                  <br />
+                                  <br />
+                                </div>
+                                 ))
+                                ) : (
+                                  <div>
+                                    No Videos  available.
+                                  </div>
+                                )}
+                            
+                            </div>
                           </td>
-                            {/* <td>{item.product_number }</td> 
-                            <td>{item.qty}</td> 
-                            <td>{item.price}</td> 
-                            <td>{item.image && <img src={baseUrl+'storage/images/'+item.image} alt="Image not found" width="200px"/>}</td> 
-                            <td className="border px-4 py-2">
-                            <Link href={'product-edit/' + item.slug}>Edit</Link>
-                            </td>
-                            <td className="border px-4 py-2">
-                            <Link href={'product-delete/' + item.slug}>Delete</Link> </td> */}
+                          <td>{item.price}</td> 
+                           <td className="border px-4 py-2">
+                                <Link href={'/admin/channel-edit/'+item.uuid}>Edit</Link>
+                          </td>
+                            
                         </tr>
                         )) } 
                        

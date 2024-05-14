@@ -28,7 +28,7 @@ const fetchData = () => {
     axios
       .get(`/admin/get-subscription-edit/${subID}`)
       .then((res) => {
-        setInfo(res.data.subData);
+        setInfo(res.data.channelData);
       })
       .catch((err) => {
         console.error("Error fetching data:", err);
